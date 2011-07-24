@@ -74,11 +74,15 @@ public class AutoSaveThread extends Thread {
             // getServer().savePlayers() & World.save() are not listed as
             // explicitly threadsafe. Note; getServer().getWorlds() isn't
             // threadsafe either.
-            plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
                 public void run() {
-                    plugin.performSave();
-                    plugin.lastSave = new Date();
+                    try{
+                        plugin.performSave();
+                        plugin.lastSave = new Date();
+                    }catch(Exception e){
+                        //Something happened while saving.
+                    }
                 }
             });
 
